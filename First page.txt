@@ -1,0 +1,872 @@
+import React, { useState } from "react";
+
+var LANDINGS_LEFT = [
+  { label: "Template Intro Page",     isNew: false },
+  { label: "Mobile App Showcase v.1", isNew: false },
+  { label: "Mobile App Showcase v.2", isNew: false },
+  { label: "Mobile App Showcase v.3", isNew: true  },
+  { label: "Product Landing",         isNew: false },
+  { label: "SaaS v.1",               isNew: false },
+  { label: "SaaS v.2",               isNew: false },
+  { label: "SaaS v.3",               isNew: false },
+  { label: "SaaS v.4",               isNew: false },
+  { label: "SaaS v.5",               isNew: true  },
+];
+
+var LANDINGS_RIGHT = [
+  { label: "Startup",                 isNew: false },
+  { label: "Financial Consulting",    isNew: false },
+  { label: "Online Courses",          isNew: false },
+  { label: "Medical",                 isNew: false },
+  { label: "Software Dev Agency v.1", isNew: false },
+  { label: "Software Dev Agency v.2", isNew: false },
+  { label: "Software Dev Agency v.3", isNew: false },
+  { label: "Conference",              isNew: false },
+  { label: "Digital Agency",          isNew: false },
+  { label: "Blog Homepage",           isNew: false },
+];
+
+var PAGES_COL1 = [
+  { heading: "About", links: ["About v.1", "About v.2", "About v.3"] },
+  { heading: "Blog",  links: ["List View with Sidebar", "Grid View with Sidebar", "List View no Sidebar", "Grid View no Sidebar", "Simple Feed", "Single Post", "Podcast"] },
+];
+
+var PAGES_COL2 = [
+  { heading: "Portfolio", links: ["Grid View", "List View", "Slider View", "Courses", "Single Project", "Single Course"] },
+  { heading: "Services",  links: ["Services v.1", "Services v.2", "Service Details v.1", "Service Details v.2"] },
+];
+
+var PAGES_COL3 = [
+  { heading: "Pricing",   links: ["Pricing Page"] },
+  { heading: "Contacts",  links: ["Contacts v.1", "Contacts v.2", "Contacts v.3"] },
+  { heading: "Specialty", links: ["404 Error v.1", "404 Error v.2"] },
+];
+
+var ACCOUNT_ITEMS = [
+  "Account Details","Security","Notifications",
+  "Messages","Saved Items","Payment Details","Sign In","Sign Up",
+];
+
+var CATEGORIES = [
+  { title: "E-commerce",     desc: "Order processing, price suggestions",   img: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=250&fit=crop" },
+  { title: "Transportation", desc: "Itinerary planning, freight pricing",    img: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400&h=250&fit=crop" },
+  { title: "Marketing",      desc: "Market research, data visualization",    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop" },
+  { title: "Robotics",       desc: "Enhancing robot learning and precision", img: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=250&fit=crop" },
+  { title: "Programming",    desc: "Code generation and debugging",          img: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop" },
+];
+
+var USE_CASES = [
+  { tab: "📊 Data Analysis",   title: "Data analysis tools",  desc: "From complex analysis to stunning visualizations, our advanced AI technology can help you extract valuable insights and make data-driven decisions faster than ever before.", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&h=450&fit=crop" },
+  { tab: "⚙️ Task Automation", title: "Tasks automation",     desc: "Integrate our smart AI with the tools you already know and use. 10x increase your productivity and efficiency of your team.",                                               img: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=700&h=450&fit=crop" },
+  { tab: "🤖 Chat Bot",        title: "Advanced chat bot",    desc: "Seamlessly integrate natural language processing into your chat bot and provide a personalized experience to your end users.",                                              img: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=700&h=450&fit=crop" },
+];
+
+var TESTIMONIALS = [
+  { name: "Emma Johnson",      role: "CEO, Co-Founder",          avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop", text: "Streamline your workflow and save valuable time with Silicon's powerful AI models which delivers top-notch results." },
+  { name: "Robert Thompson",   role: "Chief Information Officer", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop", text: "Transform your business with Silicon's outstanding AI models API, which delivers unparalleled efficiency and outstanding results." },
+  { name: "Christopher Davis", role: "Network Administrator",     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop", text: "Differentiate your app from the competition with Silicon's outstanding performance and exceptional API for implementing AI models." },
+  { name: "Samantha Grace",    role: "Data Analyst",              avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop", text: "Experience game-changing AI models that are accessible and user-friendly, thanks to this exceptional platform." },
+];
+
+var COMPARISON = [
+  { feature: "Data Models Infrastructure Cost", silicon: "Included",               custom: "$10k–$50k / month" },
+  { feature: "Engineering Cost",                silicon: "Included",               custom: "$25k–$30k / engineer / month" },
+  { feature: "Time to Implement",               silicon: "Get started in minutes", custom: "Average 6–9 months" },
+  { feature: "Maintenance & Operational Cost",  silicon: "Included",               custom: "~$20k / engineer / month" },
+];
+
+
+
+const HERO_FEATURES = [
+  "Public economy",
+  "Corporate finance",
+  "Financial planning",
+  "Project finance",
+];
+
+const WHY_TABS = [
+  {
+    id: "economic-analysis",
+    label: "Economic Analysis",
+    heading: "Economic Analysis",
+    paragraphs: [
+      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.",
+    ],
+    list: null,
+    image: "https://coderthemes.com/silicon-codeigniter/assets/img/landing/saas-4/about/01.png",
+  },
+  {
+    id: "investments",
+    label: "Investments",
+    heading: "Investments",
+    paragraphs: [
+      "It is a long established fact that a reader will be distracted by the readable content.",
+      "Pulvinar urna condimentum amet tempor, ornare integer. Lorem odio",
+    ],
+    list: null,
+    image: "https://coderthemes.com/silicon-codeigniter/assets/img/landing/saas-4/about/02.png",
+  },
+  {
+    id: "corporate-finance",
+    label: "Corporate Finance",
+    heading: "Corporate Finance",
+    paragraphs: [],
+    list: [
+      "Transparent work management",
+      "Track your progress with interactive charts",
+      "Easiest way to track time spent on tasks",
+    ],
+    image: "https://coderthemes.com/silicon-codeigniter/assets/img/landing/saas-4/about/03.png",
+  },
+];
+
+const INDUSTRIES = [
+  {
+    title: "Finance and insurance",
+    text: "Risus massa fames metus lectus diam maecenas dui. Nibh morbi id purus eget tellus diam, integer blandit. Ac condimentum a nisl sagittis, interdum. Et viverra maecenas quis cras sed gravida volutpat, cursus enim. Enim ut nulla netus porta lacus diam. Et enim ultrices nunc, nunc. In iaculis venenatis at sit.",
+    image: "https://coderthemes.com/silicon-codeigniter/assets/img/landing/software-agency-3/industries/01.jpg",
+  },
+  {
+    title: "Startup and technology",
+    text: "Nunc, amet et, et at habitant. Eget quis justo, metus at metus sapien. Urna quisque rutrum pharetra pulvinar vitae quam blandit non. Orci tempor cursus egestas quis orci at nisi maecenas. Enim in ultrices tortor, nibh quis sollicitudin tellus non maecenas. In libero ut semper nunc magna tortor.",
+    image: "https://coderthemes.com/silicon-codeigniter/assets/img/landing/software-agency-3/industries/02.jpg",
+  },
+  {
+    title: "E-commerce",
+    text: "Vivamus nisl sit volutpat laoreet ligula et. Nunc, duis est justo, cras ipsum vulputate eget tellus augue. Amet, sagittis ut enim nisl commodo, pharetra. Sapien imperdiet tristique interdum aliquet varius vitae facilisis vel. Erat convallis eget elit eget iaculis. Morbi id facilisis ligula odio sed amet suspendisse duis aliquet. Justo quam convallis id sed.",
+    image: "https://coderthemes.com/silicon-codeigniter/assets/img/landing/software-agency-3/industries/03.jpg",
+  },
+];
+
+const INTEGRATIONS = [
+  { name: "Brand 1", light: "https://coderthemes.com/silicon-codeigniter/assets/img/landing/saas-4/integrations/01-light.png" },
+  { name: "Brand 2", light: "https://coderthemes.com/silicon-codeigniter/assets/img/landing/saas-4/integrations/02-light.png" },
+  { name: "Brand 3", light: "https://coderthemes.com/silicon-codeigniter/assets/img/landing/saas-4/integrations/03-light.png" },
+  { name: "Brand 4", light: "https://coderthemes.com/silicon-codeigniter/assets/img/landing/saas-4/integrations/04-light.png" },
+  { name: "Brand 5", light: "https://coderthemes.com/silicon-codeigniter/assets/img/landing/saas-4/integrations/05-light.png" },
+];
+
+const BLOG_POSTS = [
+  {
+    date: "Sep 10, 2023",
+    title: "A Study on Smartwatch Design Qualities and People's Preferences",
+    excerpt: "Nulla fringilla arcu justo augue fringilla in nunc volutpat sit. Dui diam, faucibus vitae ultricies vitae mollis nunc elementum. Et, habitasse porta neque tempor tellus ut. Sagittis odio porttitor erat viverra erat neque, eget nisi, faucibus. Habitasse dui dui nibh ipsum sem amet sed fusce ipsum donec amet.",
+    avatar: "https://coderthemes.com/silicon-codeigniter/assets/img/avatar/03.jpg",
+    author: "Esther Howard",
+    likes: 8, comments: 7, shares: 4,
+  },
+  {
+    date: "Sep 10, 2023",
+    title: "A Study on Smartwatch Design Qualities and People's Preferences",
+    excerpt: "Nulla fringilla arcu justo augue fringilla in nunc volutpat sit. Dui diam, faucibus vitae ultricies vitae mollis nunc elementum. Et, habitasse porta neque tempor tellus ut. Sagittis odio porttitor erat viverra erat neque, eget nisi, faucibus. Habitasse dui dui nibh ipsum sem amet sed fusce ipsum donec amet.",
+    avatar: "https://coderthemes.com/silicon-codeigniter/assets/img/avatar/09.jpg",
+    author: "Esther Howard",
+    likes: 8, comments: 7, shares: 4,
+  },
+];
+
+const PRICING_PLANS = [
+  { name: "Team",       sub: "Best for small teams",   monthly: 15, annual: 12, featured: false },
+  { name: "Company",    sub: "Best for growing teams",  monthly: 25, annual: 20, featured: true  },
+  { name: "Enterprise", sub: "Best for large teams",    monthly: 50, annual: 40, featured: false },
+];
+
+
+function NewBadge() {
+  return (
+    <span style={{ background: "#22c55e", color: "#fff", fontSize: ".68rem", fontWeight: 700, padding: "2px 10px", borderRadius: 50, marginLeft: 8, flexShrink: 0 }}>
+      New
+    </span>
+  );
+}
+
+function Navbar({ dark, setDark }) {
+  var ms = useState(null);
+  var openMenu    = ms[0];
+  var setOpenMenu = ms[1];
+
+  var linkColor  = dark ? "#cbd5e1" : "#111827";
+  var dropBg     = dark ? "#1e2436" : "#ffffff";
+  var dropBorder = dark ? "#2d3748" : "#e5e7eb";
+  var dropText   = dark ? "#cbd5e1" : "#374151";
+
+ 
+  var dropBox = {
+    position: "absolute",
+    top: "100%",
+    left: 0,
+    background: dropBg,
+    border: "1px solid " + dropBorder,
+    borderRadius: 14,
+    boxShadow: "0 20px 60px rgba(0,0,0,0.13)",
+    zIndex: 9999,
+    overflow: "hidden",
+  };
+
+  return (
+    <nav style={{
+      position: "sticky", top: 0, zIndex: 9998,
+      background: dark ? "#0f1117" : "#fff",
+      borderBottom: "1px solid " + (dark ? "#1f2937" : "#e5e7eb"),
+      padding: "0 2rem", height: 68,
+      display: "flex", alignItems: "center", gap: "1rem",
+    }}>
+
+      
+      <a href="#" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none", fontWeight: 700, fontSize: "1.15rem", color: dark ? "#fff" : "#1b1f3b", flexShrink: 0 }}>
+        <div style={{ width: 36, height: 36, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: ".85rem" }}>
+          <img src="https://coderthemes.com/silicon-codeigniter/assets/img/logo.svg" style={{ width: 36, height: 36, borderRadius: 8 }} />
+        </div>
+        Silicon
+      </a>
+
+      
+      <div style={{ display: "flex", gap: 2, flex: 1, alignItems: "center" }}>
+
+       
+        <div
+          style={{ position: "relative" }}
+          onMouseEnter={function() { setOpenMenu("Landings"); }}
+          onMouseLeave={function() { setOpenMenu(null); }}
+        >
+          <button style={{ background: "none", border: "none", cursor: "pointer", padding: "22px 14px", color: openMenu === "Landings" ? "#6366f1" : linkColor, fontWeight: openMenu === "Landings" ? 700 : 500, fontSize: ".92rem", display: "flex", alignItems: "center", gap: 5 }}>
+            Landings <span style={{ fontSize: ".6rem" }}>v</span>
+          </button>
+
+          {openMenu === "Landings" && (
+            <div style={{ ...dropBox, display: "flex" }}>
+
+             
+              <div style={{ width: 260, background: dark ? "#141929" : "#eef2ff", flexShrink: 0, position: "relative", minHeight: 380 }}>
+                <div style={{ position: "absolute", top: 24, left: 16, width: 180, zIndex: 3, boxShadow: "0 8px 24px rgba(0,0,0,0.18)", borderRadius: 10, overflow: "hidden" }}>
+                  <img src="https://coderthemes.com/silicon-codeigniter/assets/img/landings.jpg" alt="" style={{ width: "100%", display: "block" }} />
+                </div>
+              </div>
+
+             
+              <div style={{ display: "flex", padding: "16px 0" }}>
+                <div style={{ minWidth: 220 }}>
+                  {LANDINGS_LEFT.map(function(item) {
+                    return (
+                      <a key={item.label} href="#" style={{ display: "flex", alignItems: "center", padding: "8px 20px", color: dropText, fontSize: ".88rem", textDecoration: "none",whiteSpace: "nowrap" }}>
+                        {item.label}
+                        {item.isNew && <NewBadge />}
+                      </a>
+                    );
+                  })}
+                </div>
+                <div style={{ minWidth: 200, paddingRight: 16 }}>
+                  {LANDINGS_RIGHT.map(function(item) {
+                    return (
+                      <a key={item.label} href="#" style={{ display: "flex", alignItems: "center", padding: "8px 20px", color: dropText, fontSize: ".88rem", textDecoration: "none" }}>
+                        {item.label}
+                        {item.isNew && <NewBadge />}
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+
+            </div>
+          )}
+        </div>
+
+        
+<div
+  style={{ position: "relative" }}
+  onMouseEnter={function() { setOpenMenu("Pages"); }}
+  onMouseLeave={function() { setOpenMenu(null); }}
+>
+  <button style={{ background: "none", border: "none", cursor: "pointer", padding: "22px 14px", color: openMenu === "Pages" ? "#6366f1" : linkColor, fontWeight: openMenu === "Pages" ? 700 : 500, fontSize: ".92rem", display: "flex", alignItems: "center", gap: 5 }}>
+    Pages <span style={{ fontSize: ".6rem" }}>v</span>
+  </button>
+
+  {openMenu === "Pages" && (
+    <div style={{ ...dropBox, display: "flex", padding: "24px 28px", gap: 40 }}>
+
+      <div>
+        {PAGES_COL1.map(function(col) {
+          return (
+            <div key={col.heading} style={{ marginBottom: 20 }}>
+              <div style={{ fontWeight: 700, fontSize: ".85rem", color: dark ? "#f1f5f9" : "#111827", marginBottom: 10 }}>{col.heading}</div>
+              {col.links.map(function(link) {
+                return <a key={link} href="#" style={{ display: "block", padding: "4px 0", color: dropText, fontSize: ".85rem", textDecoration: "none", whiteSpace: "nowrap" }}>{link}</a>;
+              })}
+            </div>
+          );
+        })}
+      </div>
+
+      
+      <div>
+        {PAGES_COL2.map(function(col) {
+          return (
+            <div key={col.heading} style={{ marginBottom: 20 }}>
+              <div style={{ fontWeight: 700, fontSize: ".85rem", color: dark ? "#f1f5f9" : "#111827", marginBottom: 10 }}>{col.heading}</div>
+              {col.links.map(function(link) {
+                return <a key={link} href="#" style={{ display: "block", padding: "4px 0", color: dropText, fontSize: ".85rem", textDecoration: "none", whiteSpace: "nowrap" }}>{link}</a>;
+              })}
+            </div>
+          );
+        })}
+      </div>
+
+      
+      <div>
+        {PAGES_COL3.map(function(col) {
+          return (
+            <div key={col.heading} style={{ marginBottom: 20 }}>
+              <div style={{ fontWeight: 700, fontSize: ".85rem", color: dark ? "#f1f5f9" : "#111827", marginBottom: 10 }}>{col.heading}</div>
+              {col.links.map(function(link) {
+                return <a key={link} href="#" style={{ display: "block", padding: "4px 0", color: dropText, fontSize: ".85rem", textDecoration: "none", whiteSpace: "nowrap" }}>{link}</a>;
+              })}
+            </div>
+          );
+        })}
+      </div>
+
+    </div>
+  )}
+</div>
+
+      
+        <div
+          style={{ position: "relative" }}
+          onMouseEnter={function() { setOpenMenu("Account"); }}
+          onMouseLeave={function() { setOpenMenu(null); }}
+        >
+          <button style={{ background: "none", border: "none", cursor: "pointer", padding: "22px 14px", color: openMenu === "Account" ? "#6366f1" : linkColor, fontWeight: openMenu === "Account" ? 700 : 500, fontSize: ".92rem", display: "flex", alignItems: "center", gap: 5 }}>
+            Account <span style={{ fontSize: ".6rem" }}>v</span>
+          </button>
+
+          {openMenu === "Account" && (
+            <div style={{ ...dropBox, padding: "8px 0", minWidth: 200 }}>
+              {ACCOUNT_ITEMS.map(function(item) {
+                return <a key={item} href="#" style={{ display: "block", padding: "8px 20px", color: dropText, fontSize: ".88rem", textDecoration: "none" }}>{item}</a>;
+              })}
+            </div>
+          )}
+        </div>
+
+           <button style={{ background: "none", border: "none", cursor: "pointer", padding: "22px 14px", color: linkColor, fontWeight: 500, fontSize: ".92rem", whiteSpace:"nowrap" }} onMouseEnter={function(e) { e.target.style.color = "#6366f1"; }} onMouseLeave={function(e) { e.target.style.color = linkColor; }}>UI Kit</button>
+
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <span style={{ fontSize: ".85rem", color: dark ? "#d1d5db" : "#374151", fontWeight: 500 }}>Light</span>
+       <button
+       onClick={() => setDark(!dark)}
+       style={{ width: 46, height: 25, borderRadius: 13, background: "#6366f1", border: "none", cursor: "pointer", position: "relative" }}
+       >
+    <div style={{ position: "absolute", top: 3, left: dark ? 23 : 3, width: 19, height: 19, borderRadius: "50%", background: dark ? "transparent" : "#fff", transition: "left .2s", boxShadow: dark ? "inset -5px -1px 0 2px #fff" : "none" }} />
+  </button>
+  <span style={{ fontSize: ".85rem", color: dark ? "#d1d5db" : "#374151", fontWeight: 500 }}>Dark</span>
+</div>
+
+     
+      <a href="#" style={{ background: "#6366f1", color: "#fff", padding: "10px 22px", borderRadius: 8, fontWeight: 600, fontSize: ".88rem", textDecoration: "none", display: "flex", alignItems: "center", gap: 8, whiteSpace:"nowrap" }}>
+     < svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="4" viewBox="0 0 24 24">
+  <circle cx="9" cy="21" r="1"/>
+  <circle cx="20" cy="21" r="1"/>
+  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+</svg>
+
+  Buy now
+</a>
+
+    </nav>
+  );
+}
+
+
+function Hero({ dark }) {
+  return (
+    <section style={{ background: dark ? "#1a1f35" : "#f3f6ff", padding: "80px 2rem 0", overflow: "hidden" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "flex-start" }}>
+
+        <div style={{ paddingBottom: 80 }}>
+          <h1 style={{ fontSize: "clamp(2.2rem,4vw,3.2rem)", fontWeight: 800, color: dark ? "#f1f5f9" : "#1b1f3b", lineHeight: 1.15, marginBottom: 20 }}>
+            Keep your finances even more easily.
+          </h1>
+          <p style={{ color: "#6b7280", fontSize: "1rem", lineHeight: 1.75, marginBottom: 32, maxWidth: 420 }}>
+            Here you can manage and monitor your finances much more conveniently with the help of the new application that we have created.
+          </p>
+          <a href="#" style={{ display: "inline-block", background: "#6366f1", color: "#fff", padding: "14px 32px", borderRadius: 8, fontWeight: 600, fontSize: ".95rem", textDecoration: "none", marginBottom: 36 }}>
+            Digitize Now
+          </a>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 16px" }}>
+            {HERO_FEATURES.map(f => (
+              <div key={f} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: ".88rem", color: dark ? "#d1d5db" : "#374151" }}>
+                 <span style={{ width: 20, height: 20, borderRadius: "50%", background: "#fff",  border: "2px solid #6366f1", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                 <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </span>
+                {f}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-end" }}>
+          <img
+            src="https://coderthemes.com/silicon-codeigniter/assets/img/landing/saas-4/hero-img.jpg"
+            alt="Silicon App"
+            style={{ width: "100%", maxWidth: 540, borderRadius: "12px 12px 0 0", boxShadow: "0 30px 80px rgba(99,102,241,.15)" }}
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+function WhySection({ dark }) {
+  const [activeTab, setActiveTab] = useState(0);
+  const tab = WHY_TABS[activeTab];
+
+  return (
+    <section style={{ padding: "80px 2rem", background: dark ? "#0f1117" : "#fff" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <h2 style={{ textAlign: "center", fontSize: "2.2rem", fontWeight: 800, color: dark ? "#f1f5f9" : "#1b1f3b", marginBottom: 32 }}>
+          Why Silicon App?
+        </h2>
+
+       
+        <div style={{ display: "flex", justifyContent: "center", gap: 12, marginBottom: 40, flexWrap: "wrap" }}>
+          {WHY_TABS.map((t, i) => (
+            <button
+              key={t.id}
+              onClick={() => setActiveTab(i)}
+              style={{
+                      padding: "10px 24px", borderRadius: 8,
+                      fontSize: ".9rem", fontWeight: 600, cursor: "pointer",
+                      border: "1.5px solid",
+                      background: activeTab === i ? "#6366f1" : (dark ? "#1f2937" : "#fff"),
+                      color:      activeTab === i ? "#fff"    : (dark ? "#d1d5db" : "#374151"),
+                      borderColor:activeTab === i ? "#6366f1" : (dark ? "#374151" : "#e5e7eb"),
+                      transition: "all .2s",
+                      display: "flex", alignItems: "center", gap: 8,
+}}
+            >
+           {i === 0 && <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" style={{ flexShrink: 0 }}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>}
+           {i === 1 && <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" style={{ flexShrink: 0 }}><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="2" y1="11" x2="22" y2="11"/><line x1="12" y1="11" x2="12" y2="20"/></svg>}
+           {i === 2 && <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" style={{ flexShrink: 0 }}><rect x="1" y="8" width="5" height="12"/><rect x="9" y="4" width="5" height="16"/><rect x="17" y="11" width="5" height="9"/></svg>}
+           {t.label}
+            </button>
+          ))}
+        </div>
+
+        
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center", background: dark ? "#1a2236" : "#f3f6ff", borderRadius: 16, padding: "48px 40px" }}>
+          <div>
+            <h3 style={{ fontSize: "1.6rem", fontWeight: 700, color: dark ? "#f1f5f9" : "#1b1f3b", marginBottom: 16 }}>
+              {tab.heading}
+            </h3>
+            {tab.paragraphs.length === 2 ? (
+            <div style={{ display: "flex", gap: 0, marginBottom: 12 }}>
+            <p style={{ color: "#6b7280", lineHeight: 1.75, fontSize: ".95rem", flex: 1, paddingRight: 20, margin: 0 }}>{tab.paragraphs[0]}</p>
+            <div style={{ width: 1, background: "#e5e7eb", flexShrink: 0, margin: "0 20px" }}></div>
+            <p style={{ color: "#6b7280", lineHeight: 1.75, fontSize: ".95rem", flex: 1, margin: 0 }}>{tab.paragraphs[1]}</p>
+            </div>
+) : (
+  tab.paragraphs.map(function(p, i) {
+    return <p key={i} style={{ color: "#6b7280", lineHeight: 1.75, fontSize: ".95rem", marginBottom: 12 }}>{p}</p>;
+  })
+)}
+            {tab.list && (
+              <ul style={{ listStyle: "none", padding: 0, marginBottom: 24 }}>
+                {tab.list.map(item => (
+                  <li key={item} style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 0", fontSize: ".92rem", color: dark ? "#d1d5db" : "#374151" }}>
+                     <span style={{ width: 20, height: 20, borderRadius: "50%", background: "#fff",  border: "2px solid #6366f1", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                 <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <a href="#" style={{ display: "inline-block", background: "#6366f1", color: "#fff", padding: "11px 28px", borderRadius: 8, fontWeight: 600, textDecoration: "none", marginTop: 8 }}>
+              Learn more
+            </a>
+          </div>
+          <div>
+            <img src={tab.image} alt={tab.heading} style={{ width: "100%", borderRadius: 12, boxShadow: "0 12px 40px rgba(0,0,0,.1)" }} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+function Industries({ dark }) {
+  var as = useState(0);
+  var active    = as[0];
+  var setActive = as[1];
+
+  var current = INDUSTRIES[active];
+
+  function goPrev() {
+    setActive(active === 0 ? INDUSTRIES.length - 1 : active - 1);
+  }
+
+  function goNext() {
+    setActive(active === INDUSTRIES.length - 1 ? 0 : active + 1);
+  }
+
+  return (
+    <section style={{ padding: "80px 2rem", background: dark ? "#0f1117" : "#fff" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }}>
+
+        <div>
+          <h2 style={{ fontSize: "2.2rem", fontWeight: 800, color: dark ? "#f1f5f9" : "#1b1f3b", marginBottom: 32 }}>
+            Industries We Serve
+          </h2>
+          <h3 style={{ fontSize: "1.15rem", fontWeight: 700, color: dark ? "#f1f5f9" : "#1b1f3b", marginBottom: 16, display: "flex", alignItems: "center", gap: 8 }}>
+            {current.title}
+            <span style={{ color: "#6366f1" }}>→</span>
+          </h3>
+          <p style={{ color: "#6b7280", fontSize: ".95rem", lineHeight: 1.8, marginBottom: 48 }}>
+            {current.text}
+          </p>
+          <div style={{ display: "flex", gap: 12 }}>
+            <button onClick={goPrev} style={{ width: 44, height: 44, borderRadius: "50%", border: "1.5px solid " + (dark ? "#374151" : "#e5e7eb"), background: dark ? "#1f2937" : "#fff", color: dark ? "#d1d5db" : "#374151", fontSize: "1.1rem", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              ‹
+            </button>
+            <button onClick={goNext} style={{ width: 44, height: 44, borderRadius: "50%", border: "1.5px solid " + (dark ? "#374151" : "#e5e7eb"), background: dark ? "#1f2937" : "#fff", color: dark ? "#d1d5db" : "#374151", fontSize: "1.1rem", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              ›
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <img src={current.image} alt={current.title} style={{ width: "100%", borderRadius: 16, boxShadow: "0 20px 60px rgba(0,0,0,.1)" }} />
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+
+function Integrations({ dark }) {
+  return (
+    <section style={{ padding: "80px 2rem", background: dark ? "#1a1f35" : "#f3f6ff" }}>
+      <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
+        <h2 style={{ fontSize: "2.2rem", fontWeight: 800, color: dark ? "#f1f5f9" : "#1b1f3b", marginBottom: 16 }}>
+          Simple Integration with Popular Tools
+        </h2>
+        <p style={{ color: "#6b7280", fontSize: ".95rem", lineHeight: 1.75, maxWidth: 600, margin: "0 auto 48px" }}>
+          In blandit luctus proin mauris a commodo, dolor diam tempus, aenean magna fusce eu. Id porttitor aliquam eget aliquet sagittis eu aut diam ut phasellus sed convallis iaculis neque ultricies convallis sed enim.
+        </p>
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16 }}>
+          {INTEGRATIONS.map((item, i) => (
+            <a key={i} href="#" style={{ display: "flex", alignItems: "center", justifyContent: "center", background: dark ? "#1f2937" : "#fff", border: `1px solid ${dark ? "#374151" : "#e5e7eb"}`, borderRadius: 100, padding: "12px 32px", boxShadow: "0 2px 8px rgba(0,0,0,.05)", textDecoration: "none" }}>
+              <img src={item.light} alt={item.name} style={{ height: 32, objectFit: "contain" }} />
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+function Opportunities({ dark }) {
+  return (
+    <>
+    <style>{`
+      @keyframes floatAll { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-16px); } }
+      .float-container { transition: transform 0.3s ease; }
+      .float-container:hover { animation: floatAll 1.5s ease-in-out infinite; }
+    `}</style>
+    <section style={{ padding: "80px 2rem", background: dark ? "#0f1117" : "#fff" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }}>
+        <div>
+          <h2 style={{ fontSize: "2.2rem", fontWeight: 800, color: dark ? "#f1f5f9" : "#1b1f3b", lineHeight: 1.2, marginBottom: 16 }}>
+            Explore Opportunities with Silicon App
+          </h2>
+          <p style={{ color: "#6b7280", fontSize: ".95rem", lineHeight: 1.75, marginBottom: 32 }}>
+            In blandit luctus proin mauris a commodo, dolor diam tempus, aenean magna fusce eu. Id porttitor aliquam eget aliquet sagittis eu aut diam ut phasellus sed convallis iaculis neque ultricies convallis sed enim.
+          </p>
+          <hr style={{ border: "none", borderTop: `1px solid ${dark ? "#1f2937" : "#e5e7eb"}`, marginBottom: 32 }} />
+          <div style={{ display: "flex", gap: 56 }}>
+            {[["23%", "Nulla venenatis everys"], ["132b", "Dictum in marko elementum"]].map(([num, label]) => (
+              <div key={num}>
+                <div style={{ fontSize: "2.8rem", fontWeight: 800, color: dark ? "#f1f5f9" : "#1b1f3b", lineHeight: 1 }}>{num}</div>
+                <div style={{ fontSize: ".85rem", color: "#6b7280", marginTop: 6 }}>{label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <div className="float-container" style={{ position: "relative", width: 420, height: 420 }}>
+
+            <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 110, height: 110, borderRadius: "50%", background: "#6366f1", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "1.1rem", zIndex: 2, boxShadow: "0 0 0 24px rgba(99,102,241,.12), 0 0 0 48px rgba(99,102,241,.06)" }}>
+              400K+
+            </div>
+
+            <div style={{ position: "absolute", top: 20, left: 40, width: 130, height: 130, borderRadius: "50%", overflow: "hidden", border: "4px solid #fff", boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}>
+              <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=130&h=130&fit=crop&crop=face" alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
+
+            <div style={{ position: "absolute", top: 40, right: 20, width: 120, height: 120, borderRadius: "50%", overflow: "hidden", border: "4px solid #fff", boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}>
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=face" alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
+
+            <div style={{ position: "absolute", bottom: 40, left: 20, width: 120, height: 120, borderRadius: "50%", overflow: "hidden", border: "4px solid #fff", boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}>
+              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=face" alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
+
+            <div style={{ position: "absolute", bottom: 20, right: 30, width: 130, height: 130, borderRadius: "50%", overflow: "hidden", border: "4px solid #fff", boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}>
+              <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=130&h=130&fit=crop&crop=face" alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+    </>
+  );
+}
+
+
+function Blog({ dark }) {
+  return (
+    <section style={{ padding: "80px 2rem", background: dark ? "#1a1f35" : "#f3f6ff" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <h2 style={{ textAlign: "center", fontSize: "2.2rem", fontWeight: 800, color: dark ? "#f1f5f9" : "#1b1f3b", marginBottom: 40 }}>
+          Latest From Our Blog
+        </h2>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 28 }}>
+          {BLOG_POSTS.map((post, i) => (
+            <div key={i} style={{ background: dark ? "#1f2937" : "#fff", border: `1px solid ${dark ? "#374151" : "#e5e7eb"}`, borderRadius: 12, padding: 28 }}>
+              <a href="#" style={{ display: "inline-block", background: dark ? "#374151" : "#f3f4f6", color: "#6b7280", padding: "4px 12px", borderRadius: 4, fontSize: ".78rem", marginBottom: 14, textDecoration: "none" }}>
+                {post.date}
+              </a>
+              <h3 style={{ fontSize: "1rem", fontWeight: 700, color: dark ? "#f1f5f9" : "#1b1f3b", lineHeight: 1.5, marginBottom: 12 }}>
+                {post.title}
+              </h3>
+              <p style={{ color: "#6b7280", fontSize: ".88rem", lineHeight: 1.7, marginBottom: 20 }}>
+                {post.excerpt}
+              </p>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <img src={post.avatar} alt={post.author} style={{ width: 36, height: 36, borderRadius: "50%", objectFit: "cover" }} />
+                <span style={{ fontSize: ".85rem", fontWeight: 600, color: dark ? "#f1f5f9" : "#1b1f3b" }}>{post.author}</span>
+                <div style={{ marginLeft: "auto", display: "flex", gap: 14, color: "#9ca3af", fontSize: ".82rem" }}>
+                 <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                 <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+                 {post.likes}
+                 </span>
+                 <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                {post.comments}
+                </span>
+                <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
+                {post.shares}
+                </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ textAlign: "center", marginTop: 36 }}>
+          <a href="#" style={{ border: `1.5px solid ${dark ? "#374151" : "#e5e7eb"}`, background: dark ? "#1f2937" : "#fff", color: "#6366f1", padding: "10px 32px", borderRadius: 8, fontWeight: 600, fontSize: ".88rem", textDecoration: "none" }}>
+            More blog posts
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+function Pricing({ dark }) {
+  const [annual, setAnnual] = useState(false);
+
+  return (
+    <section style={{ padding: "80px 2rem", background: dark ? "#0f1117" : "#fff" }}>
+      <div style={{ maxWidth: 900, margin: "0 auto" }}>
+        <h2 style={{ textAlign: "center", fontSize: "2.2rem", fontWeight: 800, color: dark ? "#f1f5f9" : "#1b1f3b", marginBottom: 8 }}>
+          Transparent Pricing for You
+        </h2>
+
+   
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, margin: "24px 0 48px" }}>
+          <span style={{ fontSize: ".9rem", fontWeight: !annual ? 700 : 400, color: !annual ? (dark ? "#f1f5f9" : "#1b1f3b") : "#9ca3af" }}>Monthly</span>
+          <button
+            onClick={() => setAnnual(!annual)}
+            style={{ width: 48, height: 26, borderRadius: 13, background: "#6366f1", border: "none", cursor: "pointer", position: "relative" }}
+          >
+            <div style={{ position: "absolute", top: 3, left: annual ? 24 : 3, width: 20, height: 20, borderRadius: "50%", background: "#fff", transition: "left .2s" }} />
+          </button>
+          <span style={{ fontSize: ".9rem", fontWeight: annual ? 700 : 400, color: annual ? (dark ? "#f1f5f9" : "#1b1f3b") : "#9ca3af" }}>Annually</span>
+        </div>
+
+       
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
+          {PRICING_PLANS.map(plan => (
+            <div key={plan.name} style={{
+              background:   plan.featured ? "#6366f1" : (dark ? "#1f2937" : "#fff"),
+              border:       "1px solid",
+              borderColor:  plan.featured ? "#6366f1" : (dark ? "#374151" : "#e5e7eb"),
+              borderRadius: 16, padding: "40px 28px", textAlign: "center",
+              transform:    plan.featured ? "translateY(-10px)" : "none",
+              boxShadow:    plan.featured ? "0 24px 60px rgba(99,102,241,.4)" : "none",
+            }}>
+              <div style={{ fontWeight: 700, fontSize: "1.1rem", color: plan.featured ? "#fff" : (dark ? "#f1f5f9" : "#1b1f3b"), marginBottom: 6 }}>
+                {plan.name}
+              </div>
+              <div style={{ fontSize: ".85rem", color: plan.featured ? "rgba(255,255,255,.7)" : "#9ca3af", marginBottom: 28 }}>
+                {plan.sub}
+              </div>
+              <div style={{ fontSize: "3.2rem", fontWeight: 800, color: plan.featured ? "#fff" : (dark ? "#f1f5f9" : "#1b1f3b"), lineHeight: 1 }}>
+                <sup style={{ fontSize: "1.4rem", verticalAlign: "super" }}>$</sup>
+                {annual ? plan.annual : plan.monthly}
+              </div>
+              <div style={{ fontSize: ".85rem", color: plan.featured ? "rgba(255,255,255,.65)" : "#9ca3af", margin: "8px 0 32px" }}>
+                per month
+              </div>
+              <a href="#" style={{ display: "block", padding: "12px 0", borderRadius: 8, fontWeight: 600, fontSize: ".9rem", textDecoration: "none", background: plan.featured ? "#fff" : "#6366f1", color: plan.featured ? "#6366f1" : "#fff" }}>
+                Get started now
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+function Footer() {
+  var cs = useState(false);
+  var countryOpen    = cs[0];
+  var setCountryOpen = cs[1];
+
+  return (
+    <footer style={{ background: "#0f1117", padding: "60px 2rem 24px" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2rem", marginBottom: 48 }}>
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 700, fontSize: "1.1rem", color: "#fff", marginBottom: 16 }}>
+            <img src="https://coderthemes.com/silicon-codeigniter/assets/img/logo.svg" style={{ width: 36, height: 36, borderRadius: 8 }} />
+            Silicon
+          </div>
+          <p style={{ color: "#6b7280", fontSize: ".88rem", lineHeight: 1.8, maxWidth: 300 }}>
+            Suscipit ipsum tincidunt pellentesque vitae. Porttitor pellentesque enim consequat faucibus fermentum duis mollis facilisis pretium justo velit pretium nec ut imperdiet volutpat commodo facilisis.
+          </p>
+        </div>
+        <div>
+          <h4 style={{ color: "#fff", fontWeight: 700, marginBottom: 20, fontSize: ".95rem" }}>Contact us</h4>
+          <a href="tel:4065550120" style={{ display: "block", color: "#9ca3af", fontSize: ".88rem", marginBottom: 12, textDecoration: "none" }}>📞 (406) 555‑0120</a>
+          <a href="mailto:email@example.com" style={{ display: "block", color: "#9ca3af", fontSize: ".88rem", textDecoration: "none" }}>✉ email@example.com</a>
+          <div style={{ display: "flex", gap: 8, marginTop: 20 }}>
+           
+          <a href="#" style={{ width: 40, height: 40, borderRadius: "50%", background: "#1f2937", color: "#9ca3af", display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none" }}>
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+         
+        <a href="#" style={{ width: 40, height: 40, borderRadius: "50%", background: "#1f2937", color: "#9ca3af", display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none" }}>
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 448 512"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/></svg>
+        </a>
+        
+        <a href="#" style={{ width: 40, height: 40, borderRadius: "50%", background: "#1f2937", color: "#9ca3af", display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none" }}>
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 496 512"><path d="M248 8C111 8 0 119 0 256S111 504 248 504 496 393 496 256 385 8 248 8zM363 176.7c-3.7 39.2-19.9 134.4-28.1 178.3-3.5 18.6-10.3 24.8-16.9 25.4-14.4 1.3-25.3-9.5-39.3-18.7-21.8-14.3-34.2-23.2-55.3-37.2-24.5-16.1-8.6-25 5.3-39.5 3.7-3.8 67.1-61.5 68.3-66.7.2-.7.3-3.1-1.2-4.4s-3.6-.8-5.1-.5q-3.3.7-104.6 69.1-14.8 10.2-26.9 9.9c-8.9-.2-25.9-5-38.6-9.1-15.5-5-27.9-7.7-26.8-16.3q.8-6.7 18.5-13.7 108.4-47.2 144.6-62.3c68.9-28.6 83.2-33.6 92.5-33.8 2.1 0 6.6.5 9.6 2.9a10.5 10.5 0 0 1 3.5 6.7 43.8 43.8 0 0 1 .5 9.9z"/></svg>
+        </a>
+       
+        <a href="#" style={{ width: 40, height: 40, borderRadius: "50%", background: "#1f2937", color: "#9ca3af", display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none" }}>
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+         </a>
+          </div>
+        </div>
+        <div>
+          <h4 style={{ color: "#fff", fontWeight: 700, marginBottom: 20, fontSize: ".95rem" }}>Country</h4>
+          <div style={{ position: "relative", display: "inline-block" }}>
+
+            
+            <button
+              onClick={function() { setCountryOpen(!countryOpen); }}
+              style={{ display: "flex", alignItems: "center", gap: 10, background: "#1f2937", border: "none", color: "#fff", padding: "8px 14px", borderRadius: 8, cursor: "pointer", fontSize: ".88rem" }}
+            >
+              <svg width="22" height="14" viewBox="0 0 22 14" style={{ borderRadius: 2 }}>
+                <rect width="22" height="14" fill="#B22234"/>
+                <rect y="1.08" width="22" height="1.08" fill="#fff"/>
+                <rect y="3.23" width="22" height="1.08" fill="#fff"/>
+                <rect y="5.38" width="22" height="1.08" fill="#fff"/>
+                <rect y="7.54" width="22" height="1.08" fill="#fff"/>
+                <rect y="9.69" width="22" height="1.08" fill="#fff"/>
+                <rect y="11.85" width="22" height="1.08" fill="#fff"/>
+                <rect width="9" height="7.54" fill="#3C3B6E"/>
+              </svg>
+              USA <span style={{ fontSize: ".7rem" }}>▾</span>
+            </button>
+
+           
+            {countryOpen && (
+              <div style={{ position: "absolute", top: "110%", left: 0, background: "#1a1f2e", borderRadius: 10, padding: "8px 0", minWidth: 160, zIndex: 999, boxShadow: "0 8px 24px rgba(0,0,0,0.4)", border: "1px solid #2d3748" }}>
+
+                
+                <a href="#" style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", color: "#d1d5db", textDecoration: "none", fontSize: ".88rem" }}>
+                  <svg width="22" height="14" viewBox="0 0 22 14" style={{ borderRadius: 2 }}>
+                    <rect width="7.33" height="14" fill="#002395"/>
+                    <rect x="7.33" width="7.33" height="14" fill="#fff"/>
+                    <rect x="14.67" width="7.33" height="14" fill="#ED2939"/>
+                  </svg>
+                  France
+                </a>
+
+                
+                <a href="#" style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", color: "#d1d5db", textDecoration: "none", fontSize: ".88rem" }}>
+                  <svg width="22" height="14" viewBox="0 0 22 14" style={{ borderRadius: 2 }}>
+                    <rect width="22" height="4.67" fill="#000"/>
+                    <rect y="4.67" width="22" height="4.67" fill="#DD0000"/>
+                    <rect y="9.33" width="22" height="4.67" fill="#FFCE00"/>
+                  </svg>
+                  Germany
+                </a>
+
+             
+                <a href="#" style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", color: "#d1d5db", textDecoration: "none", fontSize: ".88rem" }}>
+                  <svg width="22" height="14" viewBox="0 0 22 14" style={{ borderRadius: 2 }}>
+                    <rect width="7.33" height="14" fill="#009246"/>
+                    <rect x="7.33" width="7.33" height="14" fill="#fff"/>
+                    <rect x="14.67" width="7.33" height="14" fill="#CE2B37"/>
+                  </svg>
+                  Italy
+                </a>
+
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      <div style={{ maxWidth: 1100, margin: "0 auto", borderTop: "1px solid #1f2937", paddingTop: 24, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <p style={{ color: "#4b5563", fontSize: ".82rem" }}>
+          © All rights reserved. Made by <a href="#" style={{ color: "#fff", fontWeight: 700, textDecoration: "none" }}>Coderthemes</a>
+        </p>
+        <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} style={{ width: 36, height: 36, borderRadius: "50%", background: "#1f2937", color: "#9ca3af", border: "none", cursor: "pointer", fontSize: ".9rem" }}>v</button>
+      </div>
+    </footer>
+  );
+}
+
+export default function App() {
+  
+  const [dark, setDark] = useState(false);
+
+  return (
+    <div style={{ minHeight: "100vh", fontFamily: "system-ui, sans-serif", background: dark ? "#0f1117" : "#fff" }}>
+      
+      <Navbar      dark={dark} setDark={setDark} />
+      <Hero        dark={dark} />
+      <WhySection  dark={dark} />
+      <Industries  dark={dark} />
+      <Integrations dark={dark} />
+      <Opportunities dark={dark} />
+      <Blog        dark={dark} />
+      <Pricing     dark={dark} />
+      <Footer />
+    </div>
+  );
+}
